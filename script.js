@@ -1,6 +1,6 @@
 /* CS2 Map Banpick */
 
-const IMAGE_EXTENSIONS = ['webp', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'svg'];
+  IMAGE_EXTENSIONS = ['webp', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'svg'];
 
 const ALL_MAPS = [
   { id: 'mirage',   name: 'Mirage',   num: 1 },
@@ -44,7 +44,7 @@ function resolveMapImage(num) {
         resolve(null);
         return;
       }
-      const src = `maps/${num}.${IMAGE_EXTENSIONS[i++]}`;
+      const src = `${num}.${IMAGE_EXTENSIONS[i++]}`;
       const img = new Image();
       img.onload = () => {
         imageCache[key] = src;
