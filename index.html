@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS2 Map Banpick</title>
+  <meta name="description" content="CS2 Map Banpick Tool — Map Pick & Ban">
+  <meta property="og:title" content="CS2 Map Banpick">
+  <meta property="og:description" content="CS2 Map Banpick Tool">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- HOME -->
+    <section id="screen-home" class="screen active">
+      <header class="hero">
+        <div class="hero-top">
+          <button class="btn-icon" id="btn-halfscreen" title="Полэкранный режим">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M4 4l5 5M20 9V4h-5M20 4l-5 5M4 15v5h5M4 20l5-5M20 15v5h-5M20 20l-5-5"/></svg>
+          </button>
+          <button class="btn-icon" id="btn-history-home" title="История">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </button>
+        </div>
+        <h1 class="title">CS2 BANPICK</h1>
+        <p class="subtitle">Map Pick &amp; Ban Tool</p>
+        <button class="link-btn" id="btn-rules-home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          How does banpick work?
+        </button>
+      </header>
+
+      <div class="card">
+        <h2 class="card-label">NEW MATCH</h2>
+
+        <div class="form-group">
+          <input type="text" id="team-a-input" placeholder="Team 1" maxlength="32" autocomplete="off">
+          <input type="text" id="team-b-input" placeholder="Team 2" maxlength="32" autocomplete="off">
+        </div>
+
+        <div id="starter-section" class="starter-section hidden">
+          <h3 class="section-label">WHO STARTS?</h3>
+          <div class="starter-btns">
+            <button class="starter-btn ct" id="starter-a"></button>
+            <button class="starter-btn t" id="starter-b"></button>
+            <button class="starter-btn random" id="starter-random" title="Random">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="format-btns">
+          <button class="format-btn" data-format="bo1">BO1</button>
+          <button class="format-btn active" data-format="bo3">BO3</button>
+          <button class="format-btn" data-format="premier">PREMIER</button>
+        </div>
+
+        <div class="map-pool-section">
+          <div class="map-pool-header">
+            <span class="section-label">MAP POOL</span>
+            <div class="map-pool-actions">
+              <button type="button" class="pool-action-btn" id="btn-select-all-maps">All</button>
+              <button type="button" class="pool-action-btn" id="btn-clear-maps">Clear</button>
+            </div>
+          </div>
+          <div class="map-pool-grid" id="map-pool-grid"></div>
+          <p class="map-pool-hint" id="map-pool-hint">Select maps for this match</p>
+        </div>
+
+        <button class="btn-primary" id="btn-start-veto" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          START BANPICK
+        </button>
+      </div>
+    </section>
+
+    <!-- BANPICK -->
+    <section id="screen-veto" class="screen">
+      <header class="veto-header">
+        <button class="btn-back" id="btn-back-veto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="veto-header-center">
+          <div class="match-title" id="match-title"></div>
+          <div class="format-badge" id="format-badge"></div>
+        </div>
+        <button class="btn-icon" id="btn-reset-banpick" title="Сбросить">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </button>
+        <button class="btn-icon" id="btn-halfscreen-veto" title="Полэкранный режим">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M4 4l5 5M20 9V4h-5M20 4l-5 5M4 15v5h5M4 20l5-5M20 15v5h-5M20 20l-5-5"/></svg>
+        </button>
+      </header>
+
+      <div class="banpick-layout">
+        <aside class="step-plan" id="step-plan">
+          <h3 class="step-plan-title">STEPS</h3>
+          <div class="step-plan-list" id="step-plan-list"></div>
+        </aside>
+
+        <div class="banpick-main">
+          <div class="turn-banner" id="turn-banner">
+            <span class="turn-team" id="turn-team"></span>
+            <span class="turn-action" id="turn-action"></span>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="step-counter" id="step-counter"></div>
+
+          <div class="maps-grid" id="maps-grid"></div>
+
+          <div class="picked-maps" id="picked-maps"></div>
+
+          <div class="veto-complete hidden" id="veto-complete">
+            <h2>BANPICK COMPLETE</h2>
+            <div id="complete-summary"></div>
+            <button class="btn-primary" id="btn-new-match">NEW MATCH</button>
+            <button class="btn-secondary" id="btn-view-history">VIEW HISTORY</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section id="screen-history" class="screen">
+      <header class="page-header">
+        <button class="btn-back" id="btn-back-history">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h2>HISTORY</h2>
+        <button class="btn-icon danger" id="btn-clear-history" title="Очистить историю">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </header>
+      <div class="history-list" id="history-list"></div>
+      <p class="empty-state hidden" id="history-empty">История пуста. Проведите первый банпик!</p>
+    </section>
+
+    <!-- HISTORY DETAIL -->
+    <section id="screen-history-detail" class="screen">
+      <header class="page-header">
+        <button class="btn-back" id="btn-back-detail">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h2>MATCH DETAILS</h2>
+        <div style="width:40px"></div>
+      </header>
+      <div id="history-detail-content"></div>
+    </section>
+
+    <!-- RULES -->
+    <section id="screen-rules" class="screen">
+      <header class="page-header">
+        <button class="btn-back" id="btn-back-rules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h2>BANPICK RULES</h2>
+        <div style="width:40px"></div>
+      </header>
+      <div class="rules-content">
+        <div class="rule-block">
+          <h3>BO1</h3>
+          <ol>
+            <li>Team A bans 1 map</li>
+            <li>Team B bans 2 maps</li>
+            <li>Team A bans 2 maps</li>
+            <li>Team B bans 1 map</li>
+            <li>Remaining map is played (Knife for sides)</li>
+          </ol>
+        </div>
+        <div class="rule-block">
+          <h3>BO3</h3>
+          <ol>
+            <li>Team A bans 1 map</li>
+            <li>Team B bans 1 map</li>
+            <li>Team A picks a map</li>
+            <li>Team B picks side (CT/T) on Team A's pick</li>
+            <li>Team B picks a map</li>
+            <li>Team A picks side (CT/T) on Team B's pick</li>
+            <li>Team A bans 1 map</li>
+            <li>Team B bans 1 map</li>
+            <li>Remaining map = Decider (Knife)</li>
+          </ol>
+        </div>
+        <div class="rule-block">
+          <h3>PREMIER</h3>
+          <ol>
+            <li>Team A bans 2 maps</li>
+            <li>Team B bans 3 maps</li>
+            <li>Team A bans 1 of the last 2 maps (picks the map)</li>
+            <li>Remaining map is played</li>
+            <li>Team B picks starting side (CT/T)</li>
+          </ol>
+        </div>
+        <div class="rule-block">
+          <h3>MAP POOL</h3>
+          <p>Mirage, Dust 2, Nuke, Inferno, Ancient, Anubis, Cache, Overpass, Train, Vertigo</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIDE PICK MODAL -->
+    <div class="modal-overlay hidden" id="side-modal">
+      <div class="modal">
+        <h3 id="side-modal-title">SELECT SIDE</h3>
+        <p class="modal-sub" id="side-modal-map"></p>
+        <div class="side-btns">
+          <button class="side-btn ct" data-side="CT">
+            <span class="side-label">CT</span>
+            <span class="side-desc">Counter-Terrorists</span>
+          </button>
+          <button class="side-btn t" data-side="T">
+            <span class="side-label">T</span>
+            <span class="side-desc">Terrorists</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DECIDER PICK MODAL (when multiple maps remain) -->
+    <div class="modal-overlay hidden" id="decider-modal">
+      <div class="modal">
+        <h3>SELECT DECIDER MAP</h3>
+        <p class="modal-sub">Choose the decider map from remaining maps</p>
+        <div class="decider-options" id="decider-options"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
