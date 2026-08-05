@@ -1,6 +1,6 @@
 # CS2 Map Banpick
 
-https://exxxes.github.io/mapbanz/
+https://mvp1749.github.io/MapBan/
 
 Инструмент для ban/pick карт Counter-Strike 2
 
